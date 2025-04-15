@@ -1,5 +1,6 @@
 {
   "connectionString": "InstrumentationKey=467029b5-fe24-457c-adf4-2549ad8f3f4c;IngestionEndpoint=https://centralindia-0.in.applicationinsights.azure.com/;LiveEndpoint=https://centralindia.livediagnostics.monitor.azure.com/;ApplicationId=9eab9d12-2212-4eb3-bdbd-588859b7f986",
+  "instrumentationKey": "467029b5-fe24-457c-adf4-2549ad8f3f4c",
   "role": {
     "name": "PetStoreApp"
   },
