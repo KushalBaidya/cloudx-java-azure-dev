@@ -184,7 +184,7 @@ public class WebAppController {
 	@GetMapping(value = "/products")
 	public String products(Model model, OAuth2AuthenticationToken token, HttpServletRequest request,
 			@RequestParam(name = "category") String category, @RequestParam(name = "id") int id)
-			throws URISyntaxException {
+			throws Exception {
 
 		// quick validation, should really be done in validators, check for cross side
 		// scripting etc....
@@ -204,13 +204,8 @@ public class WebAppController {
 			pet = this.sessionUser.getPets().get(id - 1);
 		}
 
-		try {
-			model.addAttribute("products",
-					this.petStoreService.getProducts(pet.getCategory().getName() + " " + category, pet.getTags()));
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			logger.error("An error occurred: {}", e.getMessage());
-		}
+		model.addAttribute("products",
+				this.petStoreService.getProducts(pet.getCategory().getName() + " " + category, pet.getTags()));
 		return "products";
 	}
 
