@@ -118,7 +118,7 @@ public class PetStoreServiceImpl implements PetStoreService {
 	}
 
 	@Override
-	public Collection<Product> getProducts(String category, List<Tag> tags) {
+	public Collection<Product> getProducts(String category, List<Tag> tags) throws Exception {
 		List<Product> products = new ArrayList<>();
 
 		// Log user information
@@ -163,7 +163,7 @@ public class PetStoreServiceImpl implements PetStoreService {
 					this.sessionUser.getCustomEventProperties(), null);
 			
 			throw new Exception("Cannot move further");
-
+			
 		} catch (
 
 		WebClientException wce) {
@@ -186,8 +186,6 @@ public class PetStoreServiceImpl implements PetStoreService {
 			product.setCategory(new Category());
 			product.setId((long) 0);
 			products.add(product);
-		}catch (Exception e) {
-			logger.error("An error occurred: {}", e.getMessage());
 		}
 		return products;
 	}
