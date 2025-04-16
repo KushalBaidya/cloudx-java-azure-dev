@@ -161,8 +161,9 @@ public class PetStoreServiceImpl implements PetStoreService {
 			this.sessionUser.getTelemetryClient().trackEvent(
 					String.format("PetStoreApp user %s received %d products", this.sessionUser.getName(), productCount),
 					this.sessionUser.getCustomEventProperties(), null);
+			
+			throw new Exception("Cannot move further");
 
-			return products;
 		} catch (
 
 		WebClientException wce) {
@@ -185,6 +186,8 @@ public class PetStoreServiceImpl implements PetStoreService {
 			product.setCategory(new Category());
 			product.setId((long) 0);
 			products.add(product);
+		}catch (Exception e) {
+			logger.error("An error occurred: {}", e.getMessage());
 		}
 		return products;
 	}
