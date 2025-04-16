@@ -118,7 +118,7 @@ public class PetStoreServiceImpl implements PetStoreService {
 	}
 
 	@Override
-	public Collection<Product> getProducts(String category, List<Tag> tags) throws Exception {
+	public Collection<Product> getProducts(String category, List<Tag> tags) {
 		List<Product> products = new ArrayList<>();
 
 		// Log user information
@@ -162,7 +162,7 @@ public class PetStoreServiceImpl implements PetStoreService {
 					String.format("PetStoreApp user %s received %d products", this.sessionUser.getName(), productCount),
 					this.sessionUser.getCustomEventProperties(), null);
 			
-			throw new Exception("Cannot move further");
+			return products;
 			
 		} catch (
 
