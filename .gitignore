@@ -26,3 +26,5 @@ hs_err_pid*
 
 sandbox/**/*
 !webapp.zip
+petstore/OrderItemsReserver/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst
+petstore/OrderItemsReserver/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst
