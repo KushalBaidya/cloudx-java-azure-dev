@@ -1,0 +1,10 @@
+{
+    "azureFunctions.deploySubpath": "orderitemsreserver/target/azure-functions/orderitemsreserver",
+    "azureFunctions.postDeployTask": "npm install (functions)",
+    "azureFunctions.projectLanguage": "Java",
+    "azureFunctions.projectRuntime": "~4",
+    "debug.internalConsoleOptions": "neverOpen",
+    "azureFunctions.projectLanguageModel": 4,
+    "azureFunctions.preDeployTask": "package (functions)",
+    "azureFunctions.javaBuildTool": "maven"
+}
