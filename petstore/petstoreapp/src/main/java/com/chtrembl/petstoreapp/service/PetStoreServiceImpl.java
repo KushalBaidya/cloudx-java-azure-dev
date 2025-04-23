@@ -30,9 +30,7 @@ import reactor.core.publisher.Mono;
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
@@ -45,7 +43,6 @@ public class PetStoreServiceImpl implements PetStoreService {
 	private final WebRequest webRequest;
 
 	private WebClient petServiceWebClient = null;
-	private WebClient orderItemsReserver = null;
 	private WebClient productServiceWebClient = null;
 	private WebClient orderServiceWebClient = null;
 
@@ -64,31 +61,7 @@ public class PetStoreServiceImpl implements PetStoreService {
 				.baseUrl(this.containerEnvironment.getPetStoreProductServiceURL()).build();
 		this.orderServiceWebClient = WebClient.builder().baseUrl(this.containerEnvironment.getPetStoreOrderServiceURL())
 				.build();
-		this.orderItemsReserver = WebClient.builder()
-				.baseUrl(this.containerEnvironment.getOrderItemsReserverUrl()).build();
 	}
-
-	public String reserveOrderItems(String orderId, List<String> items) {
-        try {
-            // Create the request payload
-            Map<String, Object> requestBody = new HashMap<>();
-            requestBody.put("orderId", orderId);
-            requestBody.put("items", items);
-
-            // Make the HTTP POST call to the OrderItemsReserver function
-			return this.orderItemsReserver.post()
-					.uri("/api/reserveOrderItems")
-					.contentType(MediaType.APPLICATION_JSON)
-					.bodyValue(requestBody)
-					.retrieve()
-					.bodyToMono(String.class)
-					.block();
-        } catch (Exception e) {
-            // Log and handle the exception
-            logger.error("Error while calling OrderItemsReserver: {}", e.getMessage());
-            return "Failed to reserve order items";
-        }
-    }
 
 	@Override
 	public Collection<Pet> getPets(String category) {
@@ -148,13 +121,6 @@ public class PetStoreServiceImpl implements PetStoreService {
 	public Collection<Product> getProducts(String category, List<Tag> tags) {
 		List<Product> products = new ArrayList<>();
 
-		// Log user information
-		this.sessionUser.getTelemetryClient().trackEvent(
-				String.format(
-						"PetStoreApp user %s (session: %s) is requesting products from the PetStoreProductService",
-						this.sessionUser.getName(), this.sessionUser.getSessionId()),
-				this.sessionUser.getCustomEventProperties(), null);
-
 		try {
 			Consumer<HttpHeaders> consumer = it -> it.addAll(this.webRequest.getHeaders());
 			products = this.productServiceWebClient.get()
@@ -182,15 +148,7 @@ public class PetStoreServiceImpl implements PetStoreService {
 				products = products.stream().filter(product -> category.equals(product.getCategory().getName())
 						&& product.getTags().toString().contains("small")).collect(Collectors.toList());
 			}
-
-			int productCount = products.size();
-			this.sessionUser.getTelemetryClient().trackMetric("ProductsReturnedCount", productCount);
-			this.sessionUser.getTelemetryClient().trackEvent(
-					String.format("PetStoreApp user %s received %d products", this.sessionUser.getName(), productCount),
-					this.sessionUser.getCustomEventProperties(), null);
-
 			return products;
-
 		} catch (
 
 		WebClientException wce) {
@@ -256,19 +214,9 @@ public class PetStoreServiceImpl implements PetStoreService {
 					.retrieve()
 					.bodyToMono(Order.class).block();
 
-					if (updatedOrder != null) {
-						String response = this.reserveOrderItems(updatedOrder.getId(), updatedOrder.getProducts().stream()
-								.map(Product::getName).toList());
-						logger.info("Response from OrderItemsReserver: {}", response);
-					} else {
-						logger.warn("Updated order is null, skipping reserveOrderItems call.");
-					}
-
 		} catch (Exception e) {
 			logger.warn(e.getMessage());
 		}
-
-		
 	}
 
 	@Override

@@ -183,7 +183,8 @@ public class WebAppController {
 
 	@GetMapping(value = "/products")
 	public String products(Model model, OAuth2AuthenticationToken token, HttpServletRequest request,
-			@RequestParam(name = "category") String category, @RequestParam(name = "id") int id){
+			@RequestParam(name = "category") String category, @RequestParam(name = "id") int id)
+			throws URISyntaxException {
 
 		// quick validation, should really be done in validators, check for cross side
 		// scripting etc....

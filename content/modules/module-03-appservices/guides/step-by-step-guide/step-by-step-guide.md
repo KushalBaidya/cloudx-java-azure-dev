@@ -1,5 +1,9 @@
 # Step-by-Step Guide for Module 3 (App Services)
 
+> ⚠️ **Disclaimer**: Azure evolves faster than your coffee gets cold ☕ — so don’t be surprised if some buttons move around, screenshots look different, or steps shift slightly. That’s not a bug, it’s the cloud lifestyle. You're engineers, not screenshot-following robots, so roll with it, trust your instincts, and when in doubt — read the docs, Google like a pro, or ask ChatGPT (we won’t judge 😉).
+
+<hr>
+
 <!-- TOC -->
   * [Step 0: Prerequisites](#step-0-prerequisites)
   * [Step 1: Set Up Azure Resources](#step-1-set-up-azure-resources)
@@ -19,8 +23,12 @@ Before you start, make sure you have the following in place:
 2. **Docker Tools**:
     - **Note**: EPAM has removed Docker Desktop from the standard software toolset, so it cannot be installed on your EPAM devices.
     - **Windows Users**: Set up the Docker Engine using WSL2 following [this guide](../setting-up-docker-on-windows-using-wsl2/setting-up-docker-on-windows-using-wsl2.md). You can also explore other methods for setting up Docker as described [here](https://kb.epam.com/pages/releaseview.action?spaceKey=EPMSAM&title=Docker+Alternatives).
-    - **macOS Users**: Use any of the methods described [here](https://kb.epam.com/pages/releaseview.action?spaceKey=EPMSAM&title=Docker+Alternatives) to set up Docker.
     - **Linux Users**: Install the Docker Engine command-line tools on your Linux distribution. Refer to the Docker documentation for installation instructions based on your distribution.
+    - **macOS Users**: Use any of the methods described [here](https://kb.epam.com/pages/releaseview.action?spaceKey=EPMSAM&title=Docker+Alternatives) to set up Docker.
+
+    > 💻 **Are you using an M1 or M2 Mac?**  
+    Then Docker may build images for ARM64, which Azure App Service does not support.  
+    Read [this guide](./working-with-arm64-on-mac.md) to fix platform mismatch issues.
 
 3. **Basic Docker Knowledge**: Understand basic Docker concepts, such as building images from Dockerfiles, tagging images, and pushing them to a container registry.
 
@@ -229,6 +237,13 @@ To deploy your Webs in the Azure portal:
   <br>
   <img src="images/st-03-02-03.png" width="800" style="border: 1px solid #ccc; margin: 20px 0; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); display: inline-block;"/>
 
+<hr>
+
+> ⚠️ **Troubleshooting tip**: If you see an "Application Error" screen when opening your application, it usually means the container failed to start.
+> <img src="images/application-error.png" width="600" style="border: 1px solid #ccc; margin: 20px 0; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); display: inline-block;"/>
+> Follow [this guide](./fixing-application-error-after-deployment.md) to troubleshoot and fix it.
+
+<hr>
 
 3. **Deploy Public API Services to one region**
 
@@ -236,11 +251,9 @@ To deploy your Webs in the Azure portal:
 
   <img src="images/st-03-03-01.png" width="800" style="border: 1px solid #ccc; margin: 20px 0; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); display: inline-block;"/>
 
-> **NOTE**: If you encounter an error at this stage, please make sure that your Dockerfile contains the `EXPOSE 8080` instruction or set the environment variable `WEBSITES_PORT=8080` (see section 4 below).
-
 4. **Configure environment variables**
 
->Environment variables are dynamic values that are used by operating systems, applications, and services to store configuration settings, system paths, and other information that can be accessed and utilized by programs running on a computer or within a cloud environment. These variables provide a way to store data that may vary from system to system or from application to application.
+>**Environment variables** are dynamic values that are used by operating systems, applications, and services to store configuration settings, system paths, and other information that can be accessed and utilized by programs running on a computer or within a cloud environment. These variables provide a way to store data that may vary from system to system or from application to application.
 
 - In each App Service, find the "Configuration" section. This is where you can customize various settings for your app.
 - Add environment variables to configure URLs between services. These variables are essential for services to communicate with each other.

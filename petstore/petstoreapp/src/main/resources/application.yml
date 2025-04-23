@@ -10,8 +10,6 @@ petstore:
       url: ${PETSTOREPRODUCTSERVICE_URL:http://localhost:8082}
     order:
       url: ${PETSTOREORDERSERVICE_URL:http://localhost:8083}
-    orderItemsReserver:
-      url: ${ORDERITEMSRESERVER_URL:https://orderitemsreservernew.azurewebsites.net}
   logging:
     additional-headers-to-log: ${PETSTORE_ADDITIONAL_HEADERS_TO_LOG:}
     additional-headers-to-send: ${PETSTORE_ADDITIONAL_HEADERS_TO_SEND:}
@@ -41,7 +39,3 @@ spring:
     cache: false
   cache:
     cache-names: currentUsers
-azure:
-  application-insights:
-    connection-string: "InstrumentationKey=467029b5-fe24-457c-adf4-2549ad8f3f4c;IngestionEndpoint=https://centralindia-0.in.applicationinsights.azure.com/;LiveEndpoint=https://centralindia.livediagnostics.monitor.azure.com/;ApplicationId=9eab9d12-2212-4eb3-bdbd-588859b7f986"
-    instrumentation-key: "467029b5-fe24-457c-adf4-2549ad8f3f4c"
