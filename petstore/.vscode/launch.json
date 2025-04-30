@@ -16,6 +16,16 @@
             "hostName": "127.0.0.1",
             "port": 5005,
             "preLaunchTask": "func: host start"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-Swagger2SpringBoot<petstorepetservice>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "io.swagger.Swagger2SpringBoot",
+            "projectName": "petstorepetservice",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
         }
     ]
 }

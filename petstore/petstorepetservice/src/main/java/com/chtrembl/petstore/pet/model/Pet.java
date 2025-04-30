@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
@@ -21,13 +22,18 @@ import io.swagger.annotations.ApiModelProperty;
 @Validated
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2021-12-20T15:31:39.272-05:00")
 
+@Entity
 public class Pet {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@JsonProperty("id")
 	private Long id;
 
+	@ManyToOne
 	@JsonProperty("category")
 	private Category category;
 
+	@NotNull
 	@JsonProperty("name")
 	private String name;
 
@@ -35,9 +41,10 @@ public class Pet {
 	@Valid
 	private String photoURL;
 
+	@ElementCollection
 	@JsonProperty("tags")
 	@Valid
-	private List<Tag> tags = null;
+	private List<String> tags = null;
 
 	/**
 	 * pet status in the store
@@ -76,6 +83,7 @@ public class Pet {
 		}
 	}
 
+	@Enumerated(EnumType.STRING)
 	@JsonProperty("status")
 	private StatusEnum status;
 
@@ -158,12 +166,12 @@ public class Pet {
 		this.photoURL = photoURL;
 	}
 
-	public Pet tags(List<Tag> tags) {
+	public Pet tags(List<String> tags) {
 		this.tags = tags;
 		return this;
 	}
 
-	public Pet addTagsItem(Tag tagsItem) {
+	public Pet addTagsItem(String tagsItem) {
 		if (this.tags == null) {
 			this.tags = new ArrayList<>();
 		}
@@ -180,11 +188,11 @@ public class Pet {
 
 	@Valid
 
-	public List<Tag> getTags() {
+	public List<String> getTags() {
 		return tags;
 	}
 
-	public void setTags(List<Tag> tags) {
+	public void setTags(List<String> tags) {
 		this.tags = tags;
 	}
 

@@ -26,9 +26,10 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.chtrembl.petstore.pet.model.ContainerEnvironment;
-import com.chtrembl.petstore.pet.model.DataPreload;
+//import com.chtrembl.petstore.pet.model.DataPreload;
 import com.chtrembl.petstore.pet.model.ModelApiResponse;
 import com.chtrembl.petstore.pet.model.Pet;
+import com.chtrembl.petstore.pet.service.PetService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -48,13 +49,16 @@ public class PetApiController implements PetApi {
 	@Autowired
 	private ContainerEnvironment containerEnvironment;
 
-	@Autowired
-	private DataPreload dataPreload;
+	// @Autowired
+	// private DataPreload dataPreload;
 
-	@Override
-	public DataPreload getBeanToBeAutowired() {
-		return dataPreload;
-	}
+	@Autowired
+	private PetService petService;
+
+	// @Override
+	// public DataPreload getBeanToBeAutowired() {
+	// 	return dataPreload;
+	// }
 
 	@org.springframework.beans.factory.annotation.Autowired
 	public PetApiController(ObjectMapper objectMapper, NativeWebRequest request) {
@@ -92,15 +96,15 @@ public class PetApiController implements PetApi {
 			@NotNull @ApiParam(value = "Status values that need to be considered for filter", required = true, allowableValues = "available, pending, sold") @Valid @RequestParam(value = "status", required = true) List<String> status) {
 		conigureThreadForLogging();
 
-		String acceptType = request.getHeader("Content-Type");
-		String contentType = request.getHeader("Content-Type");
-		if (acceptType != null && contentType != null && acceptType.contains("application/json")
-				&& contentType.contains("application/json")) {
+		String acceptType = request.getHeader("accept");
+		//String contentType = request.getHeader("Content-Type");
+		if (acceptType != null && acceptType.contains("application/json")) {
 			PetApiController.log.info(String.format(
 					"PetStorePetService incoming GET request to petstorepetservice/v2/pet/findPetsByStatus?status=%s",
 					status));
 			try {
-				String petsJSON = new ObjectMapper().writeValueAsString(this.getPreloadedPets());
+				String petsJSON = new ObjectMapper().writeValueAsString(status.stream().map(Pet.StatusEnum::valueOf).map(petService::findPetsByStatus)
+						.collect(java.util.stream.Collectors.toList()));
 				ApiUtil.setResponse(request, "application/json", petsJSON);
 				return new ResponseEntity<>(HttpStatus.OK);
 			} catch (JsonProcessingException e) {
