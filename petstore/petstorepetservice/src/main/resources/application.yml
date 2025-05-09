@@ -13,7 +13,7 @@ spring:
     pathmatch:
       matching-strategy: ant_path_matcher
   datasource:
-    url: jdbc:postgresql://localhost:5432/petstoredb
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/petstoredb}
     username: postgres
     password: postgres
     driver-class-name: org.postgresql.Driver

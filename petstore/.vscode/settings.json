@@ -6,5 +6,6 @@
     "debug.internalConsoleOptions": "neverOpen",
     "azureFunctions.projectLanguageModel": 4,
     "azureFunctions.preDeployTask": "package (functions)",
-    "azureFunctions.javaBuildTool": "maven"
+    "azureFunctions.javaBuildTool": "maven",
+    "java.configuration.updateBuildConfiguration": "interactive"
 }

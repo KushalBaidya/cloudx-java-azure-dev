@@ -26,6 +26,16 @@
             "projectName": "petstorepetservice",
             "args": "",
             "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-Swagger2SpringBoot<petstoreproductservice>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "io.swagger.Swagger2SpringBoot",
+            "projectName": "petstoreproductservice",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
         }
     ]
 }
