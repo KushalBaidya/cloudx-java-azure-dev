@@ -36,3 +36,5 @@ services:
     environment:
       - PETSTOREORDERSERVICE_SERVER_PORT=8083
       - PETSTOREPRODUCTSERVICE_URL=http://petstoreproductservice:8082
+      - COSMOS_URL=https://demo-petstore-cosmosdb.documents.azure.com:443/
+      - COSMOS_KEY=<your-cosmos-key>
