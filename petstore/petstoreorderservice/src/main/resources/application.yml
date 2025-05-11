@@ -17,6 +17,12 @@ spring:
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
+  cloud:
+    azure:
+      cosmos:
+        database: orderdb
+        populate-query-metrics: true
+
 
 management:
   endpoints:

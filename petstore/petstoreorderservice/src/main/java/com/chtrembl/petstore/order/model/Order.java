@@ -16,13 +16,18 @@ import com.fasterxml.jackson.annotation.JsonValue;
 
 import io.swagger.annotations.ApiModelProperty;
 
+import com.azure.spring.data.cosmos.core.mapping.Container;
+import org.springframework.data.annotation.Id;
+
 /**
  * Order
  */
 @Validated
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2021-12-23T15:16:30.446-05:00")
 
+@Container(containerName = "orders")
 public class Order implements Serializable {
+	@Id
 	@JsonProperty("id")
 	private String id = null;
 

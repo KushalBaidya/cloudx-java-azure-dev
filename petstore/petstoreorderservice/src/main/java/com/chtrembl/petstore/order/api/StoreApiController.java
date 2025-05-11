@@ -3,6 +3,7 @@ package com.chtrembl.petstore.order.api;
 import com.chtrembl.petstore.order.model.ContainerEnvironment;
 import com.chtrembl.petstore.order.model.Order;
 import com.chtrembl.petstore.order.model.Product;
+import com.chtrembl.petstore.order.service.CosmosDbService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
@@ -49,6 +50,9 @@ public class StoreApiController implements StoreApi {
 
 	@Autowired
 	private StoreApiCache storeApiCache;
+
+	@Autowired
+	private CosmosDbService cosmosDbService;
 
 	@Override
 	public StoreApiCache getBeanToBeAutowired() {
@@ -164,7 +168,14 @@ public class StoreApiController implements StoreApi {
 			try {
 				Order order = this.storeApiCache.getOrder(body.getId());
 				String orderJSON = new ObjectMapper().writeValueAsString(order);
-
+				// Save the order to a NoSQL database like Cosmos DB
+				try {
+					// Assuming you have a Cosmos DB repository or service class named `CosmosDbService`
+					cosmosDbService.saveOrder(body);
+					log.info(String.format("Order with id %s successfully saved to Cosmos DB.", order.getId()));
+				} catch (Exception ex) {
+					log.error(String.format("Failed to save order with id %s to Cosmos DB: %s", order.getId(), ex.getMessage()));
+				}
 				ApiUtil.setResponse(request, "application/json", orderJSON);
 				return new ResponseEntity<>(HttpStatus.OK);
 			} catch (IOException e) {

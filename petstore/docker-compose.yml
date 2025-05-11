@@ -17,6 +17,7 @@ services:
       - "8081:8081"
     environment:
       - PETSTOREPETSERVICE_SERVER_PORT=8081
+      - DATABASE_URL=jdbc:postgresql://demopetstoredbkushal.postgres.database.azure.com:5432/petstoredb
 
   petstoreproductservice:
     build:
@@ -25,6 +26,7 @@ services:
       - "8082:8082"
     environment:
       - PETSTOREPRODUCTSERVICE_SERVER_PORT=8082
+      - DATABASE_URL=jdbc:postgresql://demopetstoredbkushal.postgres.database.azure.com:5432/productdb
 
   petstoreorderservice:
     build:
@@ -34,3 +36,5 @@ services:
     environment:
       - PETSTOREORDERSERVICE_SERVER_PORT=8083
       - PETSTOREPRODUCTSERVICE_URL=http://petstoreproductservice:8082
+
+      

@@ -97,17 +97,19 @@ public class ProductApiController implements ProductApi {
 			@NotNull @ApiParam(value = "Status values that need to be considered for filter", required = true, allowableValues = "available, pending, sold") @Valid @RequestParam(value = "status", required = true) List<String> status) {
 		conigureThreadForLogging();
 
-		String acceptType = request.getHeader("Content-Type");
-		String contentType = request.getHeader("Content-Type");
-		if (acceptType != null && contentType != null && acceptType.contains("application/json")
-				&& contentType.contains("application/json")) {
+		String acceptType = request.getHeader("accept");
+		//String contentType = request.getHeader("Content-Type");
+		if (acceptType != null && acceptType.contains("application/json")) {
 			ProductApiController.log.info(String.format(
 					"PetStoreProductService incoming GET request to petstoreproductservice/v2/pet/findProductsByStatus?status=%s",
 					status));
 			try {
-				String petsJSON = new ObjectMapper().writeValueAsString(status.stream().map(Product.StatusEnum::valueOf).map(productService::findProductsByStatus)
-						.collect(java.util.stream.Collectors.toList()));
-				ApiUtil.setResponse(request, "application/json", petsJSON);
+				List<Product> products = status.stream()
+						.map(Product.StatusEnum::valueOfIgnoreCase)
+						.flatMap(statusEnum -> productService.findProductsByStatus(statusEnum).stream())
+						.collect(java.util.stream.Collectors.toList());
+				String productJson = new ObjectMapper().writeValueAsString(products);
+				ApiUtil.setResponse(request, "application/json", productJson);
 				return new ResponseEntity<>(HttpStatus.OK);
 			} catch (JsonProcessingException e) {
 				ProductApiController.log.error("PetStoreProductService with findProductsByStatus() " + e.getMessage());

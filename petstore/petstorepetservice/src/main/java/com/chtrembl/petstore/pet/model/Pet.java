@@ -81,6 +81,16 @@ public class Pet {
 			}
 			throw new IllegalArgumentException("Unexpected value '" + value + "'");
 		}
+
+		public static StatusEnum valueOfIgnoreCase(String name) {
+			for (StatusEnum status : StatusEnum.values()) {
+				if (status.name().equalsIgnoreCase(name)) {
+					return status;
+				}
+			}
+			throw new IllegalArgumentException("No enum constant for value: " + name);
+		}
+
 	}
 
 	@Enumerated(EnumType.STRING)

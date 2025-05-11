@@ -16,6 +16,8 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.annotations.ApiModelProperty;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -88,9 +90,20 @@ public class Product {
             }
             throw new IllegalArgumentException("Unexpected value '" + value + "'");
         }
+
+        public static StatusEnum valueOfIgnoreCase(String name) {
+            for (StatusEnum status : StatusEnum.values()) {
+                if (status.name().equalsIgnoreCase(name)) {
+                    return status;
+                }
+            }
+            throw new IllegalArgumentException("No enum constant for value: " + name);
+        }
+
     }
 
     @JsonProperty("status")
+    @Enumerated(EnumType.STRING)
     private StatusEnum status;
 
     public Product id(Long id) {

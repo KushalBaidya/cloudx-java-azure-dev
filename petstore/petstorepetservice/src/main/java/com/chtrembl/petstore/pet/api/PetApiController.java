@@ -103,8 +103,12 @@ public class PetApiController implements PetApi {
 					"PetStorePetService incoming GET request to petstorepetservice/v2/pet/findPetsByStatus?status=%s",
 					status));
 			try {
-				String petsJSON = new ObjectMapper().writeValueAsString(status.stream().map(Pet.StatusEnum::valueOf).map(petService::findPetsByStatus)
-						.collect(java.util.stream.Collectors.toList()));
+				List<Pet> pets = status.stream()
+						.map(Pet.StatusEnum::valueOfIgnoreCase)
+						.flatMap(statusEnum -> petService.findPetsByStatus(statusEnum).stream())
+						.collect(java.util.stream.Collectors.toList());
+				String petsJSON = new ObjectMapper().writeValueAsString(pets);
+				//System.out.println(petsJSON);
 				ApiUtil.setResponse(request, "application/json", petsJSON);
 				return new ResponseEntity<>(HttpStatus.OK);
 			} catch (JsonProcessingException e) {
