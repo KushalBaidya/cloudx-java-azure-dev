@@ -20,8 +20,8 @@ spring:
   cloud:
     azure:
       cosmos:
-        uri: ${COSMOS_URL:http://localhost:8084}
-        key: ${COSMOS_KEY:your_cosmos_key}
+        uri: ${COSMOS_URL}
+        key: ${COSMOS_KEY}
         database: orderdb
         populate-query-metrics: true
 
